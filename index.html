@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Live Tournament Match Portal</title>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)), url('https://unsplash.com') no-repeat center center/cover;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+        }
+        .container {
+            background: rgba(20, 20, 20, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px #ff4500;
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #ff4500;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-bottom: 25px;
+            color: #ff4500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+        }
+        .match-btn {
+            width: 100%;
+            padding: 16px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: 0.3s ease;
+        }
+        .match-btn:hover {
+            border-color: #ff4500;
+            background: rgba(255, 69, 0, 0.1);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        #interface2 { display: none; }
+        .selected-title {
+            font-size: 24px;
+            color: #ff6a00;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .timer-box {
+            background: #ff4500;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 15px 0;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+        }
+        .room-details {
+            background: #111;
+            border: 1px dashed #ff4500;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .info-row span:last-child {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+        .join-box {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            background: #222;
+            color: #fff;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            outline: none;
+            font-size: 16px;
+        }
+        input:focus { border-color: #ff4500; }
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #28a745;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn:hover { background: #218838; box-shadow: 0 0 10px rgba(40, 167, 69, 0.4); }
+        .player-list-box {
+            text-align: left;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            max-height: 180px;
+            overflow-y: auto;
+            border: 1px solid #222;
+        }
+        .player-list-box h4 { color: #ff6a00; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;}
+        .player-item {
+            padding: 6px 0;
+            border-bottom: 1px solid #222;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .player-item span:first-child { color: #ccc; }
+        .player-item span:last-child { color: #888; font-size: 12px; }
+        .back-btn {
+            background: #444; color: white; border: none; padding: 10px 20px;
+            border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 15px;
+        }
+        .admin-section {
+            width: 100%;
+            max-width: 500px;
+            background: #141414;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ff4500;
+            margin-top: 10px;
+            display: none;
+        }
+        .admin-trigger-btn {
+            background: transparent; color: #555; border: none; cursor: pointer; font-size: 12px;
+        }
+        .admin-trigger-btn:hover { color: #ff4500; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="interface1">
+        <h2>Tournament Hub</h2>
+        <button class="match-btn" onclick="selectMatch('BR_Solo', '💥 BR Solo Match')">💥 BR Solo Match</button>
+        <button class="match-btn" onclick="selectMatch('BR_Duo', '⚡ BR Duo Match')">⚡ BR Duo Match</button>
+        <button class="match-btn" onclick="selectMatch('BR_Squad', '🔥 BR Squad Match')">🔥 BR Squad Match</button>
+        <button class="match-btn" onclick="selectMatch('CS_2v2', '⚔️ Classic Squad 2v2')">⚔️ Classic Squad 2v2</button>
+    </div>
+
+    <div id="interface2">
+        <div class="selected-title" id="matchTitle">Match Type</div>
+        <div class="timer-box" id="countdownTimer">⏳ লোড হচ্ছে...</div>
+
+        <div class="room-details">
+            <div class="info-row"><span>🚪 রুম কোড:</span><span id="roomCode">অপেক্ষা করুন...</span></div>
+            <div class="info-row"><span>🔑 পাসওয়ার্ড:</span><span id="roomPass">অপেক্ষা করুন...</span></div>
+        </div>
+
+        <div class="join-box">
+            <input type="text" id="joinName" placeholder="আপনার গেম নাম বা টিমের নাম লিখুন" required>
+            <button class="submit-btn" onclick="joinMatch()">🎮 ম্যাচটি ধরুন (Join)</button>
+        </div>
+
+        <div class="player-list-box">
+            <h4>👥 যারা ম্যাচটি ধরেছে:</h4>
+            <div id="playerListContainer">কোনো প্লেয়ার এখনো জয়েন করেনি।</div>
+        </div>
+
+        <button class="back-btn" onclick="goBack()">⬅️ পেছনে যান</button>
+    </div>
+</div>
+
+<button class="admin-trigger-btn" onclick="openAdminPanel()">⚙️ Admin Login</button>
+
+<div class="admin-section" id="adminPanel">
+    <h3 style="color: #ff4500; margin-bottom: 10px;">অ্যাডমিন কন্ট্রোল প্যানেল</h3>
+    <input type="text" id="admCode" placeholder="নতুন রুম কোড লিখুন">
+    <input type="text" id="admPass" placeholder="নতুন পাসওয়ার্ড লিখুন">
+    <button class="submit-btn" style="background: #ff4500; margin-bottom: 10px;" onclick="updateRoomData()">🔧 আপডেট করুন</button>
+    <button class="submit-btn" style="background: #dc3545;" onclick="resetPlayers()">🧹 প্লেয়ার লিস্ট ডিলিট করুন</button>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT_://firebaseapp.com",
+        databaseURL: "YOUR_DATABASE_URL",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT_://appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let currentMatchKey = ""; 
+    let timerInterval;
+
+    function selectMatch(matchKey, matchTitleText) {
+        currentMatchKey = matchKey;
+        document.getElementById('interface1').style.display = 'none';
+        document.getElementById('interface2').style.display = 'block';
+        document.getElementById('matchTitle').innerText = matchTitleText;
+        
+        database.ref('matches/' + currentMatchKey + '/roomInfo').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('roomCode').innerText = data.code || "UPCOMING";
+                document.getElementById('roomPass').innerText = data.pass || "UPCOMING";
+            } else {
+                document.getElementById('roomCode').innerText = "UPCOMING";
+                document.getElementById('roomPass').innerText = "UPCOMING";
+            }
+        });
+
+        database.ref('matches/' + currentMatchKey + '/players').on('value', (snapshot) => {
+            const container = document.getElementById('playerListContainer');
+            container.innerHTML = "";
+            const players = snapshot.val();
+            if (players) {
+                let index = 1;
+                for (let id in players) {
+                    container.innerHTML += `<div class="player-item"><span>${index}. ${players[id].name}</span> <span>${players[id].time}</span></div>`;
+                    index++;
+                }
+            } else {
+                container.innerHTML = "কোনো প্লেয়ার এখনো জয়েন করেনি।";
+            }
+        });
+
+        startCountdown();
+        timerInterval = setInterval(startCountdown, 1000);
+    }
+
+    function goBack() {
+        document.getElementById('interface2').style.display = 'none';
+        document.getElementById('interface1').style.display = 'block';
+        clearInterval(timerInterval);
+    }
+
+    function startCountdown() {
+        const now = new Date();
+        const hour = now.getHours();
+        const min = now.getMinutes();
